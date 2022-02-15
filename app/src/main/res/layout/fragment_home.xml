@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:contentDescription="@string/app_name"
+    android:orientation="vertical"
+
+    tools:context=".homefragment.HomeFragment" >
+
+    <ViewStub
+        android:id="@+id/stub_login_pic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/steam_login_pic" />
+
+    <ViewStub
+        android:id="@+id/stub_go_to_wishlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/go_to_wishlist" />
+
+
+
+</LinearLayout>
