@@ -1,18 +1,14 @@
 package com.example.saleschecker.homefragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.saleschecker.R
 import com.example.saleschecker.data.local.UserEntity
 import com.example.saleschecker.data.network.steam.SteamRepository
 import com.example.saleschecker.databinding.FragmentHomeBinding
-import com.example.saleschecker.utils.ResourceProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,9 +20,11 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
+    // TODO: Replace with proper userID
     private val userId = 76561198068107683
 
-    @Inject lateinit var repository: SteamRepository
+    @Inject
+    lateinit var repository: SteamRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
