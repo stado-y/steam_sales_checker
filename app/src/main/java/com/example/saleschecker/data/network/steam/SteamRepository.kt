@@ -17,7 +17,7 @@ class SteamRepository @Inject constructor (
 ) {
     suspend fun updateWishList() {
         val response = steamApi.getWishlist(userDao.getUserId())
-
+        Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}", )
         val convertedGames: ArrayList<GameEntity> = arrayListOf()
 
         if (response != null && response.isNotEmpty()) {
