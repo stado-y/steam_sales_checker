@@ -1,4 +1,4 @@
-package com.example.saleschecker.wishlistfragment
+package com.example.saleschecker.mutual
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.saleschecker.data.local.GameEntity
-import com.example.saleschecker.databinding.WishlistItemBinding
+import com.example.saleschecker.databinding.GameItemBinding
+import com.example.saleschecker.mutual.GlideObject.Companion.loadPicture
+import com.example.saleschecker.utils.UrlBuilder
 
-class WishListAdapter: ListAdapter<GameEntity, WishListAdapter.WishListViewHolder>(gameDiffUtil) {
+class GameListAdapter: ListAdapter<GameEntity, GameListAdapter.WishListViewHolder>(gameDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
-        val view = WishlistItemBinding.inflate(
+        val view = GameItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false,
@@ -26,12 +28,14 @@ class WishListAdapter: ListAdapter<GameEntity, WishListAdapter.WishListViewHolde
 
 
     inner class WishListViewHolder(
-        private val binding: WishlistItemBinding
+        private val binding: GameItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: GameEntity) {
+
+            binding.gamePicture.loadPicture(binding.gamePicture, UrlBuilder.getImageUrl(item.id))
             binding.gameName.text = item.name
-            binding.gamePrice.text = (item.price / 100).toString().plus(" UAH")
+            binding.gamePrice.text = if (item.price != 0f) item.price.toString().plus(" ${ item.currency }") else "Free"
         }
     }
 

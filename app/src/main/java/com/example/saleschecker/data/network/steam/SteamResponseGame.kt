@@ -1,7 +1,9 @@
 package com.example.saleschecker.data.network.steam
 
+import androidx.core.content.ContextCompat
 import com.example.saleschecker.data.local.GameEntity
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class SteamResponseGame(
 
@@ -52,18 +54,25 @@ data class SteamResponseGame(
                 discount = gamePrice.discount_pct
             }
         }
+
+        if (lowestPrice == Int.MAX_VALUE) {
+            lowestPrice = 0;
+            discount = 0;
+        }
+
         return GameEntity(
             id = gameId,
             name = name,
             image = image,
             background = background,
             review_percent = review_percent,
-            price = lowestPrice,
+            price = lowestPrice.toFloat() / 100,
             discount_pct = discount,
             is_free_game = is_free_game,
             win = win,
             mac = mac,
             linux = linux,
+            currency = Currency.getInstance(Locale.getDefault()).currencyCode
         )
     }
 }

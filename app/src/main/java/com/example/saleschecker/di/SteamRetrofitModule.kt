@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -18,13 +19,18 @@ class SteamRetrofitModule {
     @Provides
     @Singleton
     fun provideSteamRetrofit(): SteamApiClient {
-
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
+//
+//        val httpLoggingInterceptor = HttpLoggingInterceptor()
+//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//
+//        val okHttpClient = OkHttpClient.Builder()
+//            .addInterceptor(httpLoggingInterceptor)
+//            .build()
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
+            .addInterceptor(
+                HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+            ).build()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://store.steampowered.com/")
