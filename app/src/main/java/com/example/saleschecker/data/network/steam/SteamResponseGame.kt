@@ -1,9 +1,13 @@
 package com.example.saleschecker.data.network.steam
 
+import android.location.Location
+import android.location.LocationManager
 import androidx.core.content.ContextCompat
 import com.example.saleschecker.data.local.GameEntity
+import com.example.saleschecker.utils.ResourceProvider
 import com.google.gson.annotations.SerializedName
 import java.util.*
+import javax.inject.Inject
 
 data class SteamResponseGame(
 
@@ -45,7 +49,7 @@ data class SteamResponseGame(
     @SerializedName("linux")
     val linux: Int?,
 ) {
-    fun convertToGameEntity(gameId: Int): GameEntity {
+    fun convertToGameEntity(gameId: Int, currency: String): GameEntity {
         var lowestPrice = Int.MAX_VALUE
         var discount = 0
         for (gamePrice in prices) {
@@ -72,7 +76,7 @@ data class SteamResponseGame(
             win = win,
             mac = mac,
             linux = linux,
-            currency = Currency.getInstance(Locale.getDefault()).currencyCode
+            currency = currency
         )
     }
 }
@@ -85,7 +89,7 @@ data class SteamGamePrice(
     @SerializedName("discount_pct")
     val discount_pct: Int,
 
-    // final price in local currency (в копейках)
+    // final price (в копейках)
     @SerializedName("price")
     val price: Int,
 )

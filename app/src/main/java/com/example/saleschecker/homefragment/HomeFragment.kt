@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         CoroutineScope(Dispatchers.IO).launch {
-            repository.saveUserId(UserEntity(userId))
+            repository.saveUser(id = userId)
         }
 
 

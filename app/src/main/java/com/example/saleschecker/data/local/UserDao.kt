@@ -9,8 +9,11 @@ import androidx.room.Query
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveUserId(user: UserEntity)
+    suspend fun saveUser(user: UserEntity)
 
     @Query("SELECT id FROM ${ UserEntity.TABLE_NAME }")
     fun getUserId(): Long
+
+    @Query("SELECT currency FROM ${ UserEntity.TABLE_NAME }")
+    fun getCurrency(): String
 }
