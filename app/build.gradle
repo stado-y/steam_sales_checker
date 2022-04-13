@@ -18,7 +18,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/shemas".toString()]
+            }
+        }
     }
+
 
     buildTypes {
         release {
@@ -41,6 +48,14 @@ android {
         it.buildConfigField 'String', 'IMAGE_SECONDARY_URL', IMAGE_SECONDARY_URL
     }
 }
+
+//sourceSets {
+//    androidTest {
+//        java {
+//            srcDirs(files("$projectDir/schemas".toString()))
+//        }
+//    }
+//}
 
 dependencies {
 
