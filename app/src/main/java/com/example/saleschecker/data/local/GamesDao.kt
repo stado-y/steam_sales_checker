@@ -10,9 +10,14 @@ import kotlinx.coroutines.flow.Flow
 interface GamesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveGames(games: List<GameEntity>)
+    suspend fun saveSteamGames(games: List<GameEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveSteamSpyGames(toList: List<GameEntity>)
 
     @Query("SELECT * FROM ${ GameEntity.TABLE_NAME }")
     fun getListOfAllGames(): Flow<List<GameEntity>>
+
+
 
 }

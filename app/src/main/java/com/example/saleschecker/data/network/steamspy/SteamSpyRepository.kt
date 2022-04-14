@@ -25,7 +25,7 @@ class SteamSpyRepository @Inject constructor(
             convertedGames.forEach {
                 Log.e(com.example.saleschecker.data.network.steam.TAG, "updateTop100in2Weeks: ${ it.name }", )
             }
-            gamesDao.saveGames(convertedGames.toList())
+            gamesDao.saveSteamSpyGames(convertedGames.toList())
         } else {
             Log.e(com.example.saleschecker.data.network.steam.TAG, "updateTop100in2Weeks: ${ response.toString() }", )
         }

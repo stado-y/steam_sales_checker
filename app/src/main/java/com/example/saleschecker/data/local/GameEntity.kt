@@ -6,9 +6,10 @@ import com.example.saleschecker.data.local.GameEntity.Companion.TABLE_NAME
 
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = ["id", "price", "discount_pct"],
+    //primaryKeys = ["id", "price", "discount_pct"],
 )
 data class GameEntity(
+    @PrimaryKey
     val id: Int,
     val name: String,
     val image: String? = null,
@@ -20,7 +21,7 @@ data class GameEntity(
     val win: Int? = null,
     val mac: Int? = null,
     val linux: Int? = null,
-    val currency: String = "USD",
+    val currency: String = "Default",
 ) {
     companion object {
         const val TABLE_NAME = "games_table"

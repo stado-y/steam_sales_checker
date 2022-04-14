@@ -34,7 +34,7 @@ class SteamRepository @Inject constructor (
             convertedGames.forEach {
                 Log.e(TAG, "updateWishList: ${ it.name }", )
             }
-            gamesDao.saveGames(convertedGames.toList())
+            gamesDao.saveSteamGames(convertedGames.toList())
         } else {
             Log.e(TAG, "updateWishList: ${ response.toString() }", )
         }
