@@ -18,19 +18,10 @@ class SteamRetrofitModule {
 
     @Provides
     @Singleton
-    fun provideSteamRetrofit(): SteamApiClient {
-//
-//        val httpLoggingInterceptor = HttpLoggingInterceptor()
-//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-//
-//        val okHttpClient = OkHttpClient.Builder()
-//            .addInterceptor(httpLoggingInterceptor)
-//            .build()
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY)
-            ).build()
+    fun provideSteamRetrofit(
+        @OkHttpClientWithLoggingInterceptor okHttpClient: OkHttpClient
+    ): SteamApiClient {
+
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://store.steampowered.com/")

@@ -15,23 +15,36 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import com.example.saleschecker.R
+import com.example.saleschecker.di.OkHttpClientWithLoggingInterceptor
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import java.io.InputStream
+
 
 @GlideModule
 @Excludes(OkHttpLibraryGlideModule::class)
 class GlideObject : AppGlideModule() {
 
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    internal interface AppGlideModuleEntryPoint {
+        @OkHttpClientWithLoggingInterceptor
+        fun getOkHttpClient(): OkHttpClient
+    }
+    
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+        val entryPoint: AppGlideModuleEntryPoint = EntryPointAccessors.fromApplication(
+            context.applicationContext, 
+            AppGlideModuleEntryPoint::class.java,
+        )
+        val okHttpClient = entryPoint.getOkHttpClient()
         registry.replace(
             GlideUrl::class.java,
             InputStream::class.java,
-            OkHttpUrlLoader.Factory(OkHttpClient.Builder()
-                .addInterceptor(
-                    HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BODY)
-                ).build())
+            OkHttpUrlLoader.Factory(okHttpClient),
         )
     }
 

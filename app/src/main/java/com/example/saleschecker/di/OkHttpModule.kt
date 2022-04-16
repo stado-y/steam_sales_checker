@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION, AnnotationTarget.TYPE)
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class OkHttpClientWithLoggingInterceptor
