@@ -33,7 +33,7 @@ class GameListAdapter: ListAdapter<GameEntity, GameListAdapter.WishListViewHolde
 
         fun bind(item: GameEntity) {
 
-            binding.gamePicture.loadPicture(binding.gamePicture, UrlBuilder.getImageUrl(item.id))
+            binding.gamePicture.loadPicture(UrlBuilder.getImageUrl(item.id))
             binding.gameName.text = item.name
             binding.gamePrice.text = if (item.price != 0f) item.price.toString().plus(" ${ item.currency }") else "Free"
         }

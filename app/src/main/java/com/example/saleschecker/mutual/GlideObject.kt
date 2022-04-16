@@ -71,13 +71,13 @@ class GlideObject : AppGlideModule() {
 //                .into(view)
 //        }
 
-        fun ImageView.loadPicture(view: ImageView, url: String) {
-            GlideApp.with(view)
+        fun ImageView.loadPicture(url: String) {
+            GlideApp.with(this)
                 .load(url)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .dontAnimate()
                 .dontTransform()
-                .into(view)
+                .into(this)
         }
     }
 }
