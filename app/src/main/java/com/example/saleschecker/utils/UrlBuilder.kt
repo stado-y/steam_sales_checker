@@ -6,6 +6,8 @@ import com.example.saleschecker.mutual.Constants
 object UrlBuilder {
 
     private var imageCurrentUrlNumber = 0
+        @Synchronized get
+        @Synchronized set
     fun getImageUrl(
         gameId: Int,
         size: String = Constants.IMAGE_CAPSULE

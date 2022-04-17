@@ -18,7 +18,10 @@ class SteamRepository @Inject constructor (
     private val resourceProvider: ResourceProvider,
 ) {
     suspend fun updateWishList() {
-        val response = steamApi.getWishlist(userDao.getUserId())
+        val response = steamApi.getWishlist(
+            userDao.getUserId(),
+            countryCode = getCountryCode(),
+        )
         Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}", )
         val convertedGames: ArrayList<GameEntity> = arrayListOf()
 
@@ -27,7 +30,7 @@ class SteamRepository @Inject constructor (
                 convertedGames.add(
                     entry.value.convertToGameEntity(
                         entry.key.toInt(),
-                        resourceProvider.getCurrency()
+                        resourceProvider.getCurrency(getCountryCode()),
                     )
                 )
             }
@@ -42,13 +45,13 @@ class SteamRepository @Inject constructor (
     }
     suspend fun saveUser(
         id: Long = userDao.getUserId(),
-        currency: String = getCurrency(),
+        currency: String = getCountryCode(),
     ) {
-        userDao.saveUser(UserEntity(id, currency))
+        return userDao.saveUser(UserEntity(id, currency))
     }
 
-    private fun getCurrency(): String {
-        return userDao.getCurrency() ?: resourceProvider.getCurrency()
+    private fun getCountryCode(): String {
+        return userDao.getCountryCode() ?: resourceProvider.getLocale().country
     }
 
     fun getListOfGames(): Flow<List<GameEntity>> {

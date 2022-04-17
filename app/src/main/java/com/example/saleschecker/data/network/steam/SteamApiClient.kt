@@ -11,6 +11,6 @@ interface SteamApiClient {
     suspend fun getWishlist(
         @Path("user_id") profileId: Long,
         @Query("p") page: Int = 0,
-        @Query("cc") countryCode: String = "UA",
+        @Query("cc") countryCode: String = "US",
     ): Map<String, SteamResponseGame>?
 }

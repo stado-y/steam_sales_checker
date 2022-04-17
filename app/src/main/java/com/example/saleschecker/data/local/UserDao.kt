@@ -14,6 +14,6 @@ interface UserDao {
     @Query("SELECT id FROM ${ UserEntity.TABLE_NAME }")
     fun getUserId(): Long
 
-    @Query("SELECT currency FROM ${ UserEntity.TABLE_NAME }")
-    fun getCurrency(): String
+    @Query("SELECT countryCode FROM ${ UserEntity.TABLE_NAME }")
+    fun getCountryCode(): String
 }
