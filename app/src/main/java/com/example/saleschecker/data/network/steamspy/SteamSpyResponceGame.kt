@@ -1,6 +1,6 @@
 package com.example.saleschecker.data.network.steamspy
 
-import com.example.saleschecker.data.local.GameEntity
+import com.example.saleschecker.data.local.games.GameEntity
 import com.google.gson.annotations.SerializedName
 
 data class SteamSpyResponceGame(

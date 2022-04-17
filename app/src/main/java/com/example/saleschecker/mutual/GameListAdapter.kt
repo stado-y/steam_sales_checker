@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.saleschecker.data.local.GameEntity
+import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.databinding.GameItemBinding
 import com.example.saleschecker.mutual.GlideObject.Companion.loadPicture
 import com.example.saleschecker.utils.UrlBuilder

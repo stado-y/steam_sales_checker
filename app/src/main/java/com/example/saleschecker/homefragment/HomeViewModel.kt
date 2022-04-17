@@ -1,7 +1,6 @@
 package com.example.saleschecker.homefragment
 
-import androidx.lifecycle.ViewModel
-import com.example.saleschecker.data.local.GameEntity
+import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.data.network.steamspy.SteamSpyRepository
 import com.example.saleschecker.mutual.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +13,7 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel() {
 
 
-    val games: Flow<List<GameEntity>> = repository.getListOfGames()
+    val games: Flow<List<GameEntity>> = repository.getTopList()
 
     init {
         execute( request = { repository.updateTop100in2Weeks() })

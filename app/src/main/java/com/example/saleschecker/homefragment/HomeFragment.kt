@@ -8,8 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.saleschecker.data.local.GameEntity
-import com.example.saleschecker.data.local.UserEntity
+import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.data.network.steam.SteamRepository
 import com.example.saleschecker.databinding.FragmentHomeBinding
 import com.example.saleschecker.mutual.GameListAdapter

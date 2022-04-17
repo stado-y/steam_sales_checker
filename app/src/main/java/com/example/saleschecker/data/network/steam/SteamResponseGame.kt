@@ -1,13 +1,7 @@
 package com.example.saleschecker.data.network.steam
 
-import android.location.Location
-import android.location.LocationManager
-import androidx.core.content.ContextCompat
-import com.example.saleschecker.data.local.GameEntity
-import com.example.saleschecker.utils.ResourceProvider
+import com.example.saleschecker.data.local.games.GameEntity
 import com.google.gson.annotations.SerializedName
-import java.util.*
-import javax.inject.Inject
 
 data class SteamResponseGame(
 

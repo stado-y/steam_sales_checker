@@ -1,8 +1,8 @@
-package com.example.saleschecker.data.local
+package com.example.saleschecker.data.local.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.saleschecker.data.local.UserEntity.Companion.TABLE_NAME
+import com.example.saleschecker.data.local.user.UserEntity.Companion.TABLE_NAME
 
 @Entity(
     tableName = TABLE_NAME,

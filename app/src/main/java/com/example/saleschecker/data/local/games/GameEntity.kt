@@ -1,8 +1,8 @@
-package com.example.saleschecker.data.local
+package com.example.saleschecker.data.local.games
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.saleschecker.data.local.GameEntity.Companion.TABLE_NAME
+import com.example.saleschecker.data.local.games.GameEntity.Companion.TABLE_NAME
 
 @Entity(
     tableName = TABLE_NAME,
