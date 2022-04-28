@@ -2,6 +2,7 @@ package com.example.saleschecker.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.data.local.games.GamesDao
 import com.example.saleschecker.data.local.steam.SteamWishListDao
@@ -21,6 +22,7 @@ import com.example.saleschecker.data.local.user.UserEntity
     ],
     version = 1,
 )
+@TypeConverters(EntityConverters::class)
 abstract class SalesDatabase : RoomDatabase() {
 
     abstract fun gamesDao(): GamesDao

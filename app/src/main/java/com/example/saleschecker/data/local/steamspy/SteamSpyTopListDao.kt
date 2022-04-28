@@ -13,4 +13,7 @@ interface SteamSpyTopListDao {
 
     @Query("DELETE FROM ${SteamSpyTopListEntity.STEAM_SPY_TOP_TABLE}")
     suspend fun deleteTopList()
+
+    @Query("SELECT * FROM ${ SteamSpyTopListEntity.STEAM_SPY_TOP_TABLE }")
+    fun getTopList(): List<Int>
 }

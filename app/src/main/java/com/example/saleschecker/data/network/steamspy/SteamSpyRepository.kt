@@ -44,10 +44,10 @@ class SteamSpyRepository @Inject constructor(
     }
 
     fun getListOfGames(): Flow<List<GameEntity>> {
-        return gamesDao.getListOfAllGames()
+        return gamesDao.getFlowOfAllGames()
     }
 
     fun getTopList(): Flow<List<GameEntity>> {
-        return gamesDao.getSteamSpyTopList()
+        return gamesDao.getSteamSpyTopListFlow()
     }
 }

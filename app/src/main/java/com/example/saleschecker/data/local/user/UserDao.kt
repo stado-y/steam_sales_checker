@@ -15,5 +15,5 @@ interface UserDao {
     fun getUserId(): Long
 
     @Query("SELECT countryCode FROM ${UserEntity.TABLE_NAME}")
-    fun getCountryCode(): String
+    fun getCountryCode(): String?
 }

@@ -67,11 +67,11 @@ class SteamRepository @Inject constructor (
     }
 
     fun getListOfGames(): Flow<List<GameEntity>> {
-        return gamesDao.getListOfAllGames()
+        return gamesDao.getFlowOfAllGames()
     }
 
     fun getWishList(): Flow<List<GameEntity>> {
-        return gamesDao.getSteamWishList()
+        return gamesDao.getSteamWishListFlow()
     }
 
 
