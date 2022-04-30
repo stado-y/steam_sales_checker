@@ -14,7 +14,7 @@ data class SteamPriceUpdateEntity (
     val currency: String = "Default",
 
     @ColumnInfo(name = "price")
-    val final: Float,
+    val price: Float,
 
     @ColumnInfo(name =  "discount_pct")
     val discount_percent: Int,
