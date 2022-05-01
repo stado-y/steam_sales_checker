@@ -6,4 +6,7 @@
     <string name="go_to_wishlist">Go to Wishlist</string>
 
     <string name="app_preferences_file_name">@string/app_name</string>
+
+    <string name="menu_currency">Currency</string>
+    <string name="currency_dialog_title">Select currency for games</string>
 </resources>

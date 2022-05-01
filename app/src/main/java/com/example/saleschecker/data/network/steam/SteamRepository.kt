@@ -54,11 +54,14 @@ class SteamRepository @Inject constructor (
         id: Long = userDao.getUserId(),
         currency: String = getCountryCode(),
     ) {
+        Log.e(TAG, "saveUser: currency : ${ currency.toString() }", )
         return userDao.saveUser(UserEntity(id, currency))
     }
 
     private fun getCountryCode(): String {
-        return userDao.getCountryCode() ?: resourceProvider.getLocale().country
+        val countryCode = userDao.getCountryCode() ?: resourceProvider.getLocale().country
+        Log.e(TAG, "getCountryCode: ${ countryCode.toString() }", )
+        return countryCode
     }
 
     private suspend fun saveWishList(list: List<SteamWishListEntity>) {
