@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.DialogFragment
+import com.example.saleschecker.CurrencyChangeListener
 import com.example.saleschecker.R
 import com.example.saleschecker.utils.ResourceProvider
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +29,7 @@ class CurrencyDialogFragment : DialogFragment(), DialogInterface.OnClickListener
                 setAdapter(
                     CurrencyDialogAdapter(
                         context,
-                        resources.getStringArray(R.array.currencies_all),
+                        resourceProvider.getAllCurrencies(),
                         resourceProvider,
                     ),
                     this@CurrencyDialogFragment
@@ -40,6 +41,8 @@ class CurrencyDialogFragment : DialogFragment(), DialogInterface.OnClickListener
     }
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
-        Log.e(TAG, "onClick: dialog = ${dialog.toString()};;;;;;which = ${which.toString()}", )
+        val currency = resourceProvider.getAllCurrencies()[which]
+        Log.e(TAG, "onClick: currency : $currency'' which : $which", )
+        (activity as CurrencyChangeListener).onCurrencyChanged(currency)
     }
 }

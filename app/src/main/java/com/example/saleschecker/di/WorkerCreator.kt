@@ -18,7 +18,7 @@ class WorkerCreator @Inject constructor(
     fun createPriceUpdater(workType: String, context: Context = appContext) {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.UNMETERED)
-            .setRequiresBatteryNotLow(true)
+            //.setRequiresBatteryNotLow(true)
             .build()
 
 //        val inputData = Data.Builder()
