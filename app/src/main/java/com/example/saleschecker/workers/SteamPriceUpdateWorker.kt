@@ -15,10 +15,8 @@ import com.example.saleschecker.data.local.user.UserDao
 import com.example.saleschecker.data.network.steam.SteamApiClient
 import com.example.saleschecker.data.network.steam.SteamResponsePriceUpdate
 import com.example.saleschecker.mutual.Constants
-import com.example.saleschecker.services.TAG
 import com.example.saleschecker.utils.ResourceProvider
 import com.example.saleschecker.utils.toCsv
-import com.google.common.util.concurrent.ListenableFuture
 
 import dagger.assisted.Assisted
 
@@ -26,6 +24,7 @@ import dagger.assisted.AssistedInject
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
+const val TAG = "price_update_worker"
 
 const val UPDATE_PRICE_WORK_TAG = "SteamPriceUpdateWorker"
 @HiltWorker
