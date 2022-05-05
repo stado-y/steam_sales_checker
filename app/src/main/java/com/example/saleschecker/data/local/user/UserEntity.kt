@@ -10,8 +10,8 @@ import com.example.saleschecker.data.local.user.UserEntity.Companion.TABLE_NAME
 )
 class UserEntity(
     @PrimaryKey
-    val id: Long,
-    val countryCode: String,
+    val id: Long? = null,
+    val countryCode: String? = null,
 ) {
     companion object {
         const val TABLE_NAME = "user_table"

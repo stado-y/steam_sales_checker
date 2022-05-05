@@ -13,7 +13,10 @@ interface UserDao {
     suspend fun updateCountryCode(countryCode: String)
 
     @Query("SELECT id FROM ${UserEntity.TABLE_NAME}")
-    fun getUserId(): Long
+    fun getUserId(): Long?
+
+    @Query("SELECT id FROM ${UserEntity.TABLE_NAME}")
+    fun getUserIdLiveData(): LiveData<Long?>
 
     @Query("SELECT countryCode FROM ${UserEntity.TABLE_NAME}")
     fun getCountryCode(): String?

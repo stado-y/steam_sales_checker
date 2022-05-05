@@ -9,15 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.saleschecker.data.local.games.GameEntity
-import com.example.saleschecker.data.network.steam.SteamRepository
 import com.example.saleschecker.databinding.FragmentHomeBinding
 import com.example.saleschecker.mutual.GameListAdapter
 import com.example.saleschecker.utils.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -27,12 +23,6 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private val gameListAdapter: GameListAdapter = GameListAdapter()
-
-    // TODO: Replace with proper userID
-    private val userId = 76561198068107683
-
-    @Inject
-    lateinit var repository: SteamRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,16 +35,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.saveUser(id = userId)
-        }
+        inflateStub()
 
-
-        val text = binding.stubGoToWishlist.inflate()
-
-        text.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToWishListFragment())
-        }
         initRecycler()
         observe()
     }
@@ -65,6 +47,7 @@ class HomeFragment : Fragment() {
             adapter = gameListAdapter
         }
     }
+
     private fun observe() {
         viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
             val sorted: ArrayList<GameEntity> = arrayListOf()
@@ -76,5 +59,27 @@ class HomeFragment : Fragment() {
             sorted.sortByDescending { item -> item.discount_pct }
             gameListAdapter.submitList(sorted.toList())
         }
+    }
+
+    private fun inflateWishListStub() {
+        val text = binding.stubGoToWishlist.inflate()
+
+        text.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToWishListFragment())
+        }
+    }
+
+    private fun inflateLoginStub() {
+        val loginPicture = binding.stubLoginPic.inflate()
+
+        loginPicture.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSteamAuthFragment())
+        }
+    }
+
+    private fun inflateStub() {
+        viewModel.userId.value?.let {
+            inflateWishListStub()
+        } ?: inflateLoginStub()
     }
 }

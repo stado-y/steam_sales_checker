@@ -21,37 +21,37 @@ class SteamRepository @Inject constructor (
     private val resourceProvider: ResourceProvider,
 ) {
     suspend fun updateWishList() {
-        val response = steamApi.getWishlist(
-            userDao.getUserId(),
-            countryCode = getCountryCode(),
-        )
+        val response = userDao.getUserId()?.let { id ->
+            steamApi.getWishlist(
+                profileId = id,
+                countryCode = getCountryCode(),
+            )
+        }
         Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}", )
-        val convertedGames: ArrayList<GameEntity> = arrayListOf()
-        val wishList: ArrayList<SteamWishListEntity> = arrayListOf()
 
-        if (response != null && response.isNotEmpty()) {
-            response.forEach { entry ->
+        response?.let {
+            val convertedGames: ArrayList<GameEntity> = arrayListOf()
+            val wishList: ArrayList<SteamWishListEntity> = arrayListOf()
+
+            val currency = resourceProvider.getCurrency(getCountryCode())
+
+            it.forEach { entry ->
                 val gameId = entry.key.toInt()
                 convertedGames.add(
                     entry.value.convertToGameEntity(
                         gameId,
-                        resourceProvider.getCurrency(getCountryCode()),
+                        currency,
                     )
                 )
                 wishList.add(SteamWishListEntity(gameId))
             }
-            convertedGames.forEach {
-                Log.e(TAG, "updateWishList: ${ it.name }", )
-            }
             saveWishList(wishList.toList())
             gamesDao.saveSteamGames(convertedGames.toList())
-        } else {
-            Log.e(TAG, "updateWishList: ${ response.toString() }", )
         }
-
     }
+
     suspend fun saveUser(
-        id: Long = userDao.getUserId(),
+        id: Long? = userDao.getUserId(),
         currency: String = getCountryCode(),
     ) {
         Log.e(TAG, "saveUser: currency : ${ currency.toString() }", )
