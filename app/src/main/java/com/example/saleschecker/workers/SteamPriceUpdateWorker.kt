@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
-import androidx.work.ListenableWorker
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.saleschecker.data.local.EntityConverters
 import com.example.saleschecker.data.local.games.GamesDao
@@ -69,7 +67,7 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
         gameIds: List<Int>,
         countryCode: String
     ): Map<String, SteamResponsePriceUpdate> {
-        return steamApiClient.getAppDetails(
+        return steamApiClient.getAppDetailsBulk(
             gameIds.toCsv(),
             countryCode,
         )
