@@ -11,5 +11,21 @@ interface SteamApiClient {
     suspend fun getWishlist(
         @Path("user_id") profileId: Long,
         @Query("p") page: Int = 0,
+        @Query("cc") countryCode: String = "US",
     ): Map<String, SteamResponseGame>?
+
+
+    // with multiple IDs "filters" must be default
+    @GET("api/appdetails")
+    suspend fun getAppDetailsBulk(
+        @Query("appids") appIDs: String,
+        @Query("cc") countryCode: String = "US",
+        @Query("filters") filters: String = SteamPriceUpdate.PRICE_KEY,
+    ): Map<String, SteamResponsePriceUpdate>
+
+    @GET("api/appdetails")
+    suspend fun getAppDetails(
+        @Query("appids") appIDs: String,
+        @Query("cc") countryCode: String = "US",
+    ): Map<String, SteamResponseGameDetails>
 }

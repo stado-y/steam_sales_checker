@@ -1,32 +1,28 @@
 package com.example.saleschecker.homefragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.saleschecker.R
-import com.example.saleschecker.data.local.UserEntity
-import com.example.saleschecker.data.network.steam.SteamRepository
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.databinding.FragmentHomeBinding
-import com.example.saleschecker.utils.ResourceProvider
+import com.example.saleschecker.mutual.GameListAdapter
+import com.example.saleschecker.utils.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val userId = 76561198068107683
+    private val viewModel: HomeViewModel by viewModels()
 
-    @Inject lateinit var repository: SteamRepository
+    private val gameListAdapter: GameListAdapter = GameListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +35,33 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.saveUserId(UserEntity(userId))
+        inflateStub()
+
+        initRecycler()
+        observe()
+    }
+
+    private fun initRecycler() {
+        binding.homeScreenRecycler.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = gameListAdapter
         }
+    }
 
+    private fun observe() {
+        viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
+            val sorted: ArrayList<GameEntity> = arrayListOf()
+            it.forEach { item ->
+                if (!item.is_free_game) {
+                    sorted.add(item)
+                }
+            }
+            sorted.sortByDescending { item -> item.discount_pct }
+            gameListAdapter.submitList(sorted.toList())
+        }
+    }
 
+    private fun inflateWishListStub() {
         val text = binding.stubGoToWishlist.inflate()
 
         text.setOnClickListener {
@@ -51,4 +69,17 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun inflateLoginStub() {
+        val loginPicture = binding.stubLoginPic.inflate()
+
+        loginPicture.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSteamAuthFragment())
+        }
+    }
+
+    private fun inflateStub() {
+        viewModel.userId.value?.let {
+            inflateWishListStub()
+        } ?: inflateLoginStub()
+    }
 }

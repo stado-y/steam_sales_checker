@@ -1,6 +1,6 @@
 package com.example.saleschecker.data.network.steam
 
-import com.example.saleschecker.data.local.GameEntity
+import com.example.saleschecker.data.local.games.GameEntity
 import com.google.gson.annotations.SerializedName
 
 data class SteamResponseGame(
@@ -43,7 +43,7 @@ data class SteamResponseGame(
     @SerializedName("linux")
     val linux: Int?,
 ) {
-    fun convertToGameEntity(gameId: Int): GameEntity {
+    fun convertToGameEntity(gameId: Int, currency: String): GameEntity {
         var lowestPrice = Int.MAX_VALUE
         var discount = 0
         for (gamePrice in prices) {
@@ -52,18 +52,25 @@ data class SteamResponseGame(
                 discount = gamePrice.discount_pct
             }
         }
+
+        if (lowestPrice == Int.MAX_VALUE) {
+            lowestPrice = 0;
+            discount = 0;
+        }
+
         return GameEntity(
             id = gameId,
             name = name,
             image = image,
             background = background,
             review_percent = review_percent,
-            price = lowestPrice,
+            price = lowestPrice.toFloat() / 100,
             discount_pct = discount,
             is_free_game = is_free_game,
             win = win,
             mac = mac,
             linux = linux,
+            currency = currency
         )
     }
 }
@@ -76,7 +83,7 @@ data class SteamGamePrice(
     @SerializedName("discount_pct")
     val discount_pct: Int,
 
-    // final price in local currency (в копейках)
+    // final price (в копейках)
     @SerializedName("price")
     val price: Int,
 )

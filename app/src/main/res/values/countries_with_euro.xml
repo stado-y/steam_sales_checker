@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="countries_with_euro">
+        <item>AT</item>
+        <item>BE</item>
+        <item>CY</item>
+        <item>EE</item>
+        <item>FI</item>
+        <item>FR</item>
+        <item>DE</item>
+        <item>GR</item>
+        <item>IE</item>
+        <item>IT</item>
+        <item>LV</item>
+        <item>LT</item>
+        <item>LU</item>
+        <item>MT</item>
+        <item>NL</item>
+        <item>PT</item>
+        <item>SK</item>
+        <item>SI</item>
+        <item>ES</item>
+        <item>BG</item>
+        <item>HR</item>
+        <item>CZ</item>
+        <item>HU</item>
+        <item>RO</item>
+        <item>SE</item>
+        <item>DK</item>
+    </string-array>
+</resources>
