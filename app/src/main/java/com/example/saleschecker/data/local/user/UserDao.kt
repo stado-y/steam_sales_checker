@@ -9,6 +9,9 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUser(user: UserEntity)
 
+    @Query("UPDATE ${ UserEntity.TABLE_NAME } SET `id` = :userId")
+    suspend fun updateUserId(userId: Long)
+
     @Query("UPDATE ${ UserEntity.TABLE_NAME } SET `countryCode` = :countryCode")
     suspend fun updateCountryCode(countryCode: String)
 
