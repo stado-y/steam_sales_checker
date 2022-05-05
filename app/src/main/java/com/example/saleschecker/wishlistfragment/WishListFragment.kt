@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.saleschecker.R
 import com.example.saleschecker.databinding.FragmentWishListBinding
+import com.example.saleschecker.mutual.GameListAdapter
 import com.example.saleschecker.utils.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +19,7 @@ class WishListFragment : Fragment() {
 
     private val viewModel: WishListViewModel by viewModels()
 
-    private val wishListAdapter: WishListAdapter = WishListAdapter()
+    private val gameListAdapter: GameListAdapter = GameListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,12 +41,12 @@ class WishListFragment : Fragment() {
     private fun initRecycler() {
         binding.wishListRecycler.apply {
             layoutManager = LinearLayoutManager(this.context)
-            adapter = wishListAdapter
+            adapter = gameListAdapter
         }
     }
     private fun observe() {
         viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
-            wishListAdapter.submitList(it)
+            gameListAdapter.submitList(it)
         }
     }
 

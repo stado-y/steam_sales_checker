@@ -1,0 +1,14 @@
+package com.example.saleschecker.data.network.steamspy
+
+import com.example.saleschecker.data.network.steam.SteamResponseGame
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface SteamSpyApiClient {
+
+
+    @GET("api.php?")
+    suspend fun getTop100in2Weeks(
+        @Query("request") request: String = "top100in2weeks"
+    ): Map<String, SteamSpyResponceGame>
+}
