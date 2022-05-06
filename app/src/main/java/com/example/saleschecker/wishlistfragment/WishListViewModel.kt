@@ -13,14 +13,13 @@ const val TAG = "WishListViewModel"
 @HiltViewModel
 class WishListViewModel @Inject constructor(
     private val repository: SteamRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
     val games: Flow<List<GameEntity>> = repository.getWishList()
 
 
-
     init {
-        execute( request = { repository.updateWishList() })
+        execute(request = { repository.updateWishList() })
     }
 
     override fun showError(error: Throwable?) {

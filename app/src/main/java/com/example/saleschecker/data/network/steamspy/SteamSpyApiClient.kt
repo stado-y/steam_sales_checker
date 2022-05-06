@@ -1,6 +1,5 @@
 package com.example.saleschecker.data.network.steamspy
 
-import com.example.saleschecker.data.network.steam.SteamResponseGame
 import retrofit2.http.GET
 import retrofit2.http.Query
 

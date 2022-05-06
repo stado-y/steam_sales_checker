@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val userDao: UserDao,
     private val workerCreator: WorkerCreator
-): BaseViewModel() {
+) : BaseViewModel() {
 
     val currentCountryCode: LiveData<String?> = userDao.getCountryCodeLiveData()
 

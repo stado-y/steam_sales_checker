@@ -13,12 +13,12 @@ const val TAG = "SteamSpyRepository"
 class SteamSpyRepository @Inject constructor(
     private val steamSpyApi: SteamSpyApiClient,
     private val gamesDao: GamesDao,
-    private  val steamSpyTopListDao: SteamSpyTopListDao,
+    private val steamSpyTopListDao: SteamSpyTopListDao,
 ) {
 
     suspend fun updateTop100in2Weeks() {
         val response = steamSpyApi.getTop100in2Weeks()
-        Log.e(TAG, "updateTop100in2Weeks: ${ response.toString() }", )
+        Log.e(TAG, "updateTop100in2Weeks: $response")
         val convertedGames: ArrayList<GameEntity> = arrayListOf()
         val topList: ArrayList<SteamSpyTopListEntity> = arrayListOf()
 
@@ -28,12 +28,18 @@ class SteamSpyRepository @Inject constructor(
                 topList.add(SteamSpyTopListEntity(entry.value.id))
             }
             convertedGames.forEach {
-                Log.e(com.example.saleschecker.data.network.steam.TAG, "updateTop100in2Weeks: ${ it.name }", )
+                Log.e(
+                    com.example.saleschecker.data.network.steam.TAG,
+                    "updateTop100in2Weeks: ${it.name}",
+                )
             }
             saveTopList(topList)
             gamesDao.saveSteamSpyGames(convertedGames.toList())
         } else {
-            Log.e(com.example.saleschecker.data.network.steam.TAG, "updateTop100in2Weeks: ${ response.toString() }", )
+            Log.e(
+                com.example.saleschecker.data.network.steam.TAG,
+                "updateTop100in2Weeks: $response",
+            )
         }
 
     }

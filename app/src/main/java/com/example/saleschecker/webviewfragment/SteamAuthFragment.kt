@@ -1,10 +1,10 @@
 package com.example.saleschecker.webviewfragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.saleschecker.databinding.FragmentSteamAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,7 +13,8 @@ class SteamAuthFragment : Fragment(), UserIdReceiver {
 
     private lateinit var binding: FragmentSteamAuthBinding
 
-    private val LOL_PARAM = "sasels_check"
+    //burh
+    private val LOL_PARAM = "sales_check"
 
     override fun onCreateView(
         inflater: LayoutInflater,

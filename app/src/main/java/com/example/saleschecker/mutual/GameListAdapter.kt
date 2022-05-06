@@ -10,7 +10,7 @@ import com.example.saleschecker.databinding.GameItemBinding
 import com.example.saleschecker.mutual.GlideObject.Companion.loadPicture
 import com.example.saleschecker.utils.UrlBuilder
 
-class GameListAdapter: ListAdapter<GameEntity, GameListAdapter.WishListViewHolder>(gameDiffUtil) {
+class GameListAdapter : ListAdapter<GameEntity, GameListAdapter.WishListViewHolder>(gameDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
         val view = GameItemBinding.inflate(
@@ -35,13 +35,17 @@ class GameListAdapter: ListAdapter<GameEntity, GameListAdapter.WishListViewHolde
 
             binding.gamePicture.loadPicture(UrlBuilder.getImageUrl(item.id))
             binding.gameName.text = item.name
-            binding.gamePrice.text = if (item.price != 0f) item.price.toString().plus(" ${ item.currency }") else "Free"
+            binding.gamePrice.text =
+                if (item.price != 0f) item.price.toString().plus(" ${item.currency}") else "Free!"
+            binding.root.setOnClickListener {
+
+            }
         }
     }
 
 
     companion object {
-        private val gameDiffUtil = object: DiffUtil.ItemCallback<GameEntity>() {
+        private val gameDiffUtil = object : DiffUtil.ItemCallback<GameEntity>() {
             override fun areItemsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
                 return oldItem === newItem
             }

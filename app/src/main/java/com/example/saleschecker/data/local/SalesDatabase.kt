@@ -27,7 +27,7 @@ abstract class SalesDatabase : RoomDatabase() {
 
     abstract fun gamesDao(): GamesDao
     abstract fun userDao(): UserDao
-    abstract  fun steamWishListDao(): SteamWishListDao
+    abstract fun steamWishListDao(): SteamWishListDao
     abstract fun steamSpyTopListDao(): SteamSpyTopListDao
 
     companion object {

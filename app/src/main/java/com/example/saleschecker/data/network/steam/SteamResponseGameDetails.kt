@@ -47,7 +47,7 @@ data class SteamGameDetails(
     @SerializedName("screenshots")
     val screenshots: List<SteamScreenShot>,
 
-)
+    )
 
 data class SteamScreenShot(
     @SerializedName("id")

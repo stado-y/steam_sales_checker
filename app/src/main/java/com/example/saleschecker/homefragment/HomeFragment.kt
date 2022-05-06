@@ -13,7 +13,6 @@ import com.example.saleschecker.databinding.FragmentHomeBinding
 import com.example.saleschecker.mutual.GameListAdapter
 import com.example.saleschecker.utils.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {

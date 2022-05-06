@@ -34,10 +34,10 @@ class GlideObject : AppGlideModule() {
         @OkHttpClientWithLoggingInterceptor
         fun getOkHttpClient(): OkHttpClient
     }
-    
+
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         val entryPoint: AppGlideModuleEntryPoint = EntryPointAccessors.fromApplication(
-            context.applicationContext, 
+            context.applicationContext,
             AppGlideModuleEntryPoint::class.java,
         )
         val okHttpClient = entryPoint.getOkHttpClient()
@@ -72,7 +72,7 @@ class GlideObject : AppGlideModule() {
 //        }
 
         fun ImageView.loadPicture(url: String) {
-            GlideApp.with(this)
+            Glide.with(this)
                 .load(url)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .dontAnimate()

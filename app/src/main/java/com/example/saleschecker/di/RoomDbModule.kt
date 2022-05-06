@@ -2,11 +2,11 @@ package com.example.saleschecker.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.saleschecker.data.local.games.GamesDao
 import com.example.saleschecker.data.local.SalesDatabase
-import com.example.saleschecker.data.local.user.UserDao
+import com.example.saleschecker.data.local.games.GamesDao
 import com.example.saleschecker.data.local.steam.SteamWishListDao
 import com.example.saleschecker.data.local.steamspy.SteamSpyTopListDao
+import com.example.saleschecker.data.local.user.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object RoomDbModule {
-
 
 
     @Provides

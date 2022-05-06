@@ -1,10 +1,10 @@
 package com.example.saleschecker.wishlistfragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.saleschecker.databinding.FragmentWishListBinding
@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WishListFragment : Fragment() {
 
-    lateinit var binding: FragmentWishListBinding
+    private lateinit var binding: FragmentWishListBinding
 
     private val viewModel: WishListViewModel by viewModels()
 
@@ -37,13 +37,13 @@ class WishListFragment : Fragment() {
     }
 
 
-
     private fun initRecycler() {
         binding.wishListRecycler.apply {
             layoutManager = LinearLayoutManager(this.context)
             adapter = gameListAdapter
         }
     }
+
     private fun observe() {
         viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
             gameListAdapter.submitList(it)

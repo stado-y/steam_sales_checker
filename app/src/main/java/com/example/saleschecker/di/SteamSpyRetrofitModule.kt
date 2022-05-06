@@ -18,7 +18,7 @@ class SteamSpyRetrofitModule {
     @Provides
     @Singleton
     fun provideSteamSpyRetrofit(
-       @OkHttpClientWithLoggingInterceptor okHttpClient: OkHttpClient
+        @OkHttpClientWithLoggingInterceptor okHttpClient: OkHttpClient
     ): SteamSpyApiClient {
         return Retrofit.Builder()
             .baseUrl("https://steamspy.com/")

@@ -3,7 +3,7 @@ package com.example.saleschecker.data.network.steam
 import com.google.gson.annotations.SerializedName
 
 
-class SteamPriceUpdate (
+class SteamPriceUpdate(
     @SerializedName("currency")
     val currency: String,
 

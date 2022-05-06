@@ -10,15 +10,16 @@ import com.example.saleschecker.CurrencyChangeListener
 import com.example.saleschecker.R
 import com.example.saleschecker.utils.ResourceProvider
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 
 const val TAG = "CurrencyDialogFragment"
+
 @AndroidEntryPoint
 class CurrencyDialogFragment : DialogFragment(), DialogInterface.OnClickListener {
 
-    @Inject lateinit var resourceProvider: ResourceProvider
+    @Inject
+    lateinit var resourceProvider: ResourceProvider
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -42,7 +43,7 @@ class CurrencyDialogFragment : DialogFragment(), DialogInterface.OnClickListener
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
         val currency = resourceProvider.getAllCurrencies()[which]
-        Log.e(TAG, "onClick: currency : $currency'' which : $which", )
+        Log.e(TAG, "onClick: currency : $currency'' which : $which")
         (activity as CurrencyChangeListener).onCurrencyChanged(currency)
     }
 }

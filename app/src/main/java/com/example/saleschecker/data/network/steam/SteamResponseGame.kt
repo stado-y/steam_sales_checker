@@ -54,8 +54,8 @@ data class SteamResponseGame(
         }
 
         if (lowestPrice == Int.MAX_VALUE) {
-            lowestPrice = 0;
-            discount = 0;
+            lowestPrice = 0
+            discount = 0
         }
 
         return GameEntity(

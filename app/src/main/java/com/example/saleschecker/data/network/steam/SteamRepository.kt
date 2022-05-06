@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 const val TAG = "SteamRepository"
 
-class SteamRepository @Inject constructor (
+class SteamRepository @Inject constructor(
     private val steamApi: SteamApiClient,
     private val userDao: UserDao,
     private val gamesDao: GamesDao,
@@ -27,7 +27,7 @@ class SteamRepository @Inject constructor (
                 countryCode = getCountryCode(),
             )
         }
-        Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}", )
+        Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}")
 
         response?.let {
             val convertedGames: ArrayList<GameEntity> = arrayListOf()
@@ -54,13 +54,13 @@ class SteamRepository @Inject constructor (
         id: Long? = userDao.getUserId(),
         currency: String = getCountryCode(),
     ) {
-        Log.e(TAG, "saveUser: currency : ${ currency.toString() }", )
+        Log.e(TAG, "saveUser: currency : $currency")
         return userDao.saveUser(UserEntity(id, currency))
     }
 
     private fun getCountryCode(): String {
         val countryCode = userDao.getCountryCode() ?: resourceProvider.getLocale().country
-        Log.e(TAG, "getCountryCode: ${ countryCode.toString() }", )
+        Log.e(TAG, "getCountryCode: $countryCode")
         return countryCode
     }
 

@@ -14,6 +14,6 @@ interface SteamWishListDao {
     @Query("DELETE FROM ${SteamWishListEntity.STEAM_WISHLIST_TABLE}")
     suspend fun deleteWishList()
 
-    @Query("SELECT `gameId` FROM ${ SteamWishListEntity.STEAM_WISHLIST_TABLE }")
+    @Query("SELECT `gameId` FROM ${SteamWishListEntity.STEAM_WISHLIST_TABLE}")
     suspend fun getSteamWishListGameIds(): List<Int>
 }

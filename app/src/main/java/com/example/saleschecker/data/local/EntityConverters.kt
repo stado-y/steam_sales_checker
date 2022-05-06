@@ -5,7 +5,6 @@ import androidx.room.TypeConverter
 import com.example.saleschecker.data.local.steam.SteamPriceUpdateEntity
 import com.example.saleschecker.data.network.steam.SteamPriceUpdate
 import com.example.saleschecker.data.network.steam.SteamResponsePriceUpdate
-import java.lang.Exception
 
 object EntityConverters {
 
@@ -14,7 +13,7 @@ object EntityConverters {
         response: Map<String, SteamResponsePriceUpdate>
     ): List<SteamPriceUpdateEntity> {
         val container: ArrayList<SteamPriceUpdateEntity> = arrayListOf()
-        response.forEach() {
+        response.forEach {
             try {
                 if (it.value.success) {
                     val currentPrice = it.value.data[SteamPriceUpdate.PRICE_KEY]
@@ -30,7 +29,11 @@ object EntityConverters {
                     }
                 }
             } catch (error: Exception) {
-                Log.e("EntityConverters", "convertSteamResponsePriceUpdateToSteamPriceUpdateEntity: ", error)
+                Log.e(
+                    "EntityConverters",
+                    "convertSteamResponsePriceUpdateToSteamPriceUpdateEntity: ",
+                    error
+                )
             }
         }
         return container.toList()

@@ -15,16 +15,13 @@ import com.example.saleschecker.data.network.steam.SteamResponsePriceUpdate
 import com.example.saleschecker.mutual.Constants
 import com.example.saleschecker.utils.ResourceProvider
 import com.example.saleschecker.utils.toCsv
-
 import dagger.assisted.Assisted
-
 import dagger.assisted.AssistedInject
-import java.lang.Exception
-import java.lang.IllegalArgumentException
 
 const val TAG = "price_update_worker"
 
 const val UPDATE_PRICE_WORK_TAG = "SteamPriceUpdateWorker"
+
 @HiltWorker
 class SteamPriceUpdateWorker @AssistedInject constructor(
     @Assisted context: Context, @Assisted params: WorkerParameters,
@@ -35,8 +32,7 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
     private val resourceProvider: ResourceProvider,
     private val steamSpyTopListDao: SteamSpyTopListDao,
 
-) : CoroutineWorker(context, params) {
-
+    ) : CoroutineWorker(context, params) {
 
 
     override suspend fun doWork(): Result {
@@ -50,14 +46,17 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
         }
 
 
-
     }
 
     private suspend fun getGamesList(countryCode: String): List<Int> {
         val workType = inputData.getString(Constants.TYPE_OF_UPDATE)
         return when (workType) {
             Constants.UPDATE_WISHLIST -> steamWishListDao.getSteamWishListGameIds()
-            Constants.UPDATE_CURRENCY -> gamesDao.getListOfGameIdsToUpdateCurrency(resourceProvider.getCurrency(countryCode))
+            Constants.UPDATE_CURRENCY -> gamesDao.getListOfGameIdsToUpdateCurrency(
+                resourceProvider.getCurrency(
+                    countryCode
+                )
+            )
             Constants.UPDATE_STEAMSPY_PRICES -> steamSpyTopListDao.getTopList()
             else -> throw (IllegalArgumentException("$TAG : getGamesList : invalid update type : $workType"))
         }
@@ -74,7 +73,11 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
     }
 
     private suspend fun savePrices(response: Map<String, SteamResponsePriceUpdate>) {
-        gamesDao.updatePrices(EntityConverters.convertSteamResponsePriceUpdateToSteamPriceUpdateEntity(response))
+        gamesDao.updatePrices(
+            EntityConverters.convertSteamResponsePriceUpdateToSteamPriceUpdateEntity(
+                response
+            )
+        )
     }
 
 }

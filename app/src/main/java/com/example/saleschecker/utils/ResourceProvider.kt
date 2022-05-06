@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.os.ConfigurationCompat
 import com.example.saleschecker.R
-import java.lang.IllegalArgumentException
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton

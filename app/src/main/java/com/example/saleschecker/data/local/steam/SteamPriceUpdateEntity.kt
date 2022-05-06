@@ -1,11 +1,9 @@
 package com.example.saleschecker.data.local.steam
 
 import androidx.room.ColumnInfo
-import androidx.room.Update
-import com.example.saleschecker.data.local.games.GameEntity
 
 
-data class SteamPriceUpdateEntity (
+data class SteamPriceUpdateEntity(
 
     @ColumnInfo(name = "id")
     val id: Int,
@@ -16,6 +14,6 @@ data class SteamPriceUpdateEntity (
     @ColumnInfo(name = "price")
     val price: Float,
 
-    @ColumnInfo(name =  "discount_pct")
+    @ColumnInfo(name = "discount_pct")
     val discount_percent: Int,
 )

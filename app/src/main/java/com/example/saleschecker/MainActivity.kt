@@ -19,7 +19,6 @@ interface CurrencyChangeListener {
 }
 
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), CurrencyChangeListener {
 
@@ -27,7 +26,8 @@ class MainActivity : AppCompatActivity(), CurrencyChangeListener {
 
     private val viewModel: MainActivityViewModel by viewModels()
 
-    @Inject lateinit var resourceProvider: ResourceProvider
+    @Inject
+    lateinit var resourceProvider: ResourceProvider
 
     private var currencyMenuItem: MenuItem? = null
 
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), CurrencyChangeListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.menu_currency -> {
                 currencyMenuItem = item
                 openCurrencyDialog()
@@ -66,21 +66,23 @@ class MainActivity : AppCompatActivity(), CurrencyChangeListener {
     private fun openCurrencyDialog() {
         val dialogFragment = CurrencyDialogFragment()
         dialogFragment.show(supportFragmentManager, "currency")
+
     }
 
     private fun changeCurrencyPicture(countryCode: String?) {
         if (currencyMenuItem == null) {
-            Log.e(TAG,"changeCurrencyPicture : currencyMenuItem is null")
+            Log.e(TAG, "changeCurrencyPicture : currencyMenuItem is null")
+
         }
-        Log.e(TAG, "changeCurrencyPicture: countryCode : $countryCode", )
+        Log.e(TAG, "changeCurrencyPicture: countryCode : $countryCode")
         val flagDrawable = resourceProvider.getCountryCodeDrawable(countryCode)
         currencyMenuItem?.icon = flagDrawable
-
     }
+
 
     override fun onCurrencyChanged(currency: String) {
         val countryCode = resourceProvider.getCountryCodeFromCurrency(currency)
-        Log.e(TAG, "onCurrencyChanged: countryCode : $countryCode", )
+        Log.e(TAG, "onCurrencyChanged: countryCode : $countryCode")
         viewModel.setCurrency(countryCode)
     }
 
