@@ -3,6 +3,7 @@ package com.example.saleschecker.data.local
 import android.util.Log
 import androidx.room.TypeConverter
 import com.example.saleschecker.data.local.steam.SteamPriceUpdateEntity
+import com.example.saleschecker.data.network.steam.SteamPriceUpdate
 import com.example.saleschecker.data.network.steam.SteamResponsePriceUpdate
 import java.lang.Exception
 
@@ -16,7 +17,7 @@ object EntityConverters {
         response.forEach() {
             try {
                 if (it.value.success) {
-                    val currentPrice = it.value.data[SteamResponsePriceUpdate.PRICE_KEY]
+                    val currentPrice = it.value.data[SteamPriceUpdate.PRICE_KEY]
                     if (currentPrice != null) {
                         container.add(
                             SteamPriceUpdateEntity(

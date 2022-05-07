@@ -1,7 +1,6 @@
 package com.example.saleschecker.di
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.example.saleschecker.mutual.Constants
 import com.example.saleschecker.workers.SteamPriceUpdateWorker
@@ -17,7 +16,7 @@ class WorkerCreator @Inject constructor(
 
     fun createPriceUpdater(workType: String, context: Context = appContext) {
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
             //.setRequiresBatteryNotLow(true)
             .build()
 
