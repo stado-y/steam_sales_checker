@@ -52,7 +52,6 @@ android {
             if (keyStorePropertiesFile.exists()) {
                 signingConfig signingConfigs.release
             }
-
         }
         debug {
             applicationIdSuffix ".debug"
