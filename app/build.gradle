@@ -7,8 +7,24 @@ plugins {
 
     id 'dagger.hilt.android.plugin'
 }
+def keyStorePropertiesFile = rootProject.file(PROPERTIES_PATH)
+def keystoreProperties = new Properties()
+if (keyStorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keyStorePropertiesFile))
+}
 
 android {
+     if (keyStorePropertiesFile.exists()) {
+        signingConfigs {
+            release {
+                storeFile file(keystoreProperties["KEYSTORE_PATH"])
+                storePassword keystoreProperties["KEYSTORE_PASSWORD"]
+                keyAlias keystoreProperties["KEY_ALIAS"]
+                keyPassword keystoreProperties["KEYSTORE_KEY_PASSWORD"]
+            }
+        }
+    }
+
     compileSdk 31
 
     defaultConfig {
@@ -30,11 +46,20 @@ android {
 
     buildTypes {
         release {
+            applicationIdSuffix ".release"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keyStorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+
         }
         debug {
             applicationIdSuffix ".debug"
+            debuggable true
+        }
+        debugNoLogin {
+            applicationIdSuffix ".debug_no_login"
             debuggable true
         }
     }
