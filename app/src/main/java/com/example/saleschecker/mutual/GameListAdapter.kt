@@ -43,7 +43,7 @@ class GameListAdapter: ListAdapter<GameEntity, GameListAdapter.WishListViewHolde
     companion object {
         private val gameDiffUtil = object: DiffUtil.ItemCallback<GameEntity>() {
             override fun areItemsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
-                return oldItem === newItem
+                return areContentsTheSame(oldItem, newItem)
             }
 
             override fun areContentsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
