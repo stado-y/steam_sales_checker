@@ -18,6 +18,7 @@ import com.example.saleschecker.utils.gone
 import com.example.saleschecker.utils.observeWithLifecycle
 import com.example.saleschecker.utils.showSelf
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 const val TAG = "HomeFragment"
 
@@ -28,7 +29,8 @@ class HomeFragment : FragmentWithRecycler() {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private val gameListAdapter: GameListAdapter = GameListAdapter()
+    @Inject
+    lateinit var gameListAdapter: GameListAdapter
 
 
     override fun onCreateView(

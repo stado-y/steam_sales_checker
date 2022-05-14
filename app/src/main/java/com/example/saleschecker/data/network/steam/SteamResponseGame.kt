@@ -52,11 +52,15 @@ data class SteamResponseGame(
                 discount = gamePrice.discount_pct
             }
         }
-
-        if (lowestPrice == Int.MAX_VALUE) {
-            lowestPrice = 0;
-            discount = 0;
+        if (is_free_game) {
+            lowestPrice = 0
+            discount = 0
         }
+
+//        if (lowestPrice == Int.MAX_VALUE) {
+//            lowestPrice = 0;
+//            discount = 0;
+//        }
 
         return GameEntity(
             id = gameId,
