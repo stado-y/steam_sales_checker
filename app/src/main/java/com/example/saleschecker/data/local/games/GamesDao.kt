@@ -4,7 +4,6 @@ import androidx.room.*
 import com.example.saleschecker.data.local.steam.SteamPriceUpdateEntity
 import com.example.saleschecker.data.local.steam.SteamWishListEntity
 import com.example.saleschecker.data.local.steamspy.SteamSpyTopListEntity
-import com.example.saleschecker.data.network.steam.SteamResponsePriceUpdate
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,10 +13,12 @@ interface GamesDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun saveSteamGames(games: List<GameEntity>)
 
-        @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } WHERE `id` IN ${ SteamWishListEntity.STEAM_WISHLIST_TABLE }")
+        @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } " +
+                "WHERE `id` IN ${ SteamWishListEntity.STEAM_WISHLIST_TABLE }")
         fun getSteamWishListFlow(): Flow<List<GameEntity>>
 
-        @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } WHERE `id` IN ${ SteamWishListEntity.STEAM_WISHLIST_TABLE }")
+        @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } " +
+                "WHERE `id` IN ${ SteamWishListEntity.STEAM_WISHLIST_TABLE }")
         fun getSteamWishListGameList(): List<GameEntity>
     // steam
 
@@ -25,7 +26,8 @@ interface GamesDao {
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         suspend fun saveSteamSpyGames(toList: List<GameEntity>)
 
-        @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } WHERE `id` IN ${ SteamSpyTopListEntity.STEAM_SPY_TOP_TABLE }")
+        @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } " +
+                "WHERE `id` IN ${ SteamSpyTopListEntity.STEAM_SPY_TOP_TABLE }")
         fun getSteamSpyTopListFlow(): Flow<List<GameEntity>>
     // steamSpy
 

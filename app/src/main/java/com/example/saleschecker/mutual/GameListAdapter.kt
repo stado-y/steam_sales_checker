@@ -5,12 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.saleschecker.R
 import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.databinding.GameItemBinding
 import com.example.saleschecker.mutual.GlideObject.Companion.loadPicture
+import com.example.saleschecker.utils.ResourceProvider
 import com.example.saleschecker.utils.UrlBuilder
+import javax.inject.Inject
 
-class GameListAdapter: ListAdapter<GameEntity, GameListAdapter.WishListViewHolder>(gameDiffUtil) {
+class GameListAdapter @Inject constructor(
+    private val resourceProvider: ResourceProvider
+): ListAdapter<GameEntity, GameListAdapter.WishListViewHolder>(gameDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
         val view = GameItemBinding.inflate(
@@ -32,10 +37,18 @@ class GameListAdapter: ListAdapter<GameEntity, GameListAdapter.WishListViewHolde
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: GameEntity) {
-
             binding.gamePicture.loadPicture(UrlBuilder.getImageUrl(item.id))
             binding.gameName.text = item.name
-            binding.gamePrice.text = if (item.price != 0f) item.price.toString().plus(" ${ item.currency }") else "Free"
+            binding.gamePrice.text = when (item.price) {
+                0f -> resourceProvider.getStringResource(R.string.free_game)
+                Constants.DEFAULT_PRICE -> {
+                    if (item.is_free_game) { resourceProvider.getStringResource(R.string.free_game) }
+                    else { resourceProvider.getStringResource(R.string.price_is_unavailable) }
+                }
+                else -> item.price.toString().plus(" ${ item.currency }")
+            }
+
+//            if (item.price != 0f) item.price.toString().plus(" ${ item.currency }") else "Free"
         }
     }
 

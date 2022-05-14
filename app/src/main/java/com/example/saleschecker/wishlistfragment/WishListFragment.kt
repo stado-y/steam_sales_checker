@@ -14,6 +14,7 @@ import com.example.saleschecker.mutual.FragmentWithRecycler
 import com.example.saleschecker.mutual.GameListAdapter
 import com.example.saleschecker.utils.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WishListFragment : FragmentWithRecycler(), BackButtonCallbackReceiver {
@@ -22,7 +23,8 @@ class WishListFragment : FragmentWithRecycler(), BackButtonCallbackReceiver {
 
     private val viewModel: WishListViewModel by viewModels()
 
-    private val gameListAdapter: GameListAdapter = GameListAdapter()
+    @Inject
+    lateinit var gameListAdapter: GameListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
