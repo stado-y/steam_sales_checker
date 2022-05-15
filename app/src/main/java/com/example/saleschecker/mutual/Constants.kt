@@ -10,6 +10,7 @@ object Constants {
     const val CURRENCY_CODE = "currency_code"
     const val USER_ID = "user_id"
     const val DEFAULT_USER_ID: Long = -1
+    const val DEFAULT_PRICE = Int.MAX_VALUE.toFloat() / 100f
 
     const val TYPE_OF_UPDATE = "type_of_update"
     const val UPDATE_WISHLIST = "update_wishlist"

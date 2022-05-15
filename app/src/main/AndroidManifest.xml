@@ -18,11 +18,6 @@
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove">
         </provider>
-        
-        <service
-            android:name=".services.SteamPriceUpdater"
-            android:enabled="true"
-            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

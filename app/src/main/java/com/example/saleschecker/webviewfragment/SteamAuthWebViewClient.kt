@@ -8,7 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 
 interface UserIdReceiver {
-    fun receiveUserId (userId: String)
+    fun receiveSteamUserId (userId: String?)
 }
 
 
@@ -26,10 +26,10 @@ class SteamAuthWebViewClient(
             view?.stopLoading()
             val userAccountUrl = Uri.parse(parsedUrl.getQueryParameter("openid.identity"))
             val userId = userAccountUrl.lastPathSegment
-            if (userId != null) {
-                receiver.receiveUserId(userId)
-                Log.e(TAG, "onPageStarted: Send userId : $userId", )
-            }
+
+            receiver.receiveSteamUserId(userId)
+            Log.e(TAG, "onPageStarted: Send userId : $userId", )
+
         }
     }
 }

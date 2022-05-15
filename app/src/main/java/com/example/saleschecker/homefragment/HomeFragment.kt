@@ -1,84 +1,111 @@
 package com.example.saleschecker.homefragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.ViewStub
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.databinding.FragmentHomeBinding
+import com.example.saleschecker.mutual.Constants
+import com.example.saleschecker.mutual.FragmentWithRecycler
 import com.example.saleschecker.mutual.GameListAdapter
+import com.example.saleschecker.utils.gone
 import com.example.saleschecker.utils.observeWithLifecycle
+import com.example.saleschecker.utils.showSelf
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+const val TAG = "HomeFragment"
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : FragmentWithRecycler() {
 
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private val gameListAdapter: GameListAdapter = GameListAdapter()
+    @Inject
+    lateinit var gameListAdapter: GameListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        Log.e(TAG, "onCreateView: ", )
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        inflateStub()
+        recycler = binding.homeScreenRecycler
 
+        observeGames()
+        observeUserId()
         initRecycler()
-        observe()
+    }
+
+    private fun observeUserId() {
+        viewModel.userId.observe(viewLifecycleOwner) {
+            showLoginOrWishListButton(it == Constants.DEFAULT_USER_ID || it == null)
+        }
+    }
+
+    private fun showLoginOrWishListButton(showLogin: Boolean) {
+        var stubToShow = binding.stubGoToWishlist
+        var stubToHide = binding.stubLoginPic
+        if (showLogin) {
+            stubToShow = binding.stubLoginPic
+            stubToHide = binding.stubGoToWishlist
+        }
+        showStub(stubToShow)
+        stubToHide.gone()
     }
 
     private fun initRecycler() {
-        binding.homeScreenRecycler.apply {
+        recycler?.apply {
             layoutManager = LinearLayoutManager(this.context)
-            adapter = gameListAdapter
-        }
-    }
-
-    private fun observe() {
-        viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
-            val sorted: ArrayList<GameEntity> = arrayListOf()
-            it.forEach { item ->
-                if (!item.is_free_game) {
-                    sorted.add(item)
-                }
+            if (adapter != gameListAdapter) {
+                adapter = gameListAdapter
             }
-            sorted.sortByDescending { item -> item.discount_pct }
-            gameListAdapter.submitList(sorted.toList())
         }
     }
 
-    private fun inflateWishListStub() {
-        val text = binding.stubGoToWishlist.inflate()
-
-        text.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToWishListFragment())
+    private fun observeGames() {
+        viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
+            submitListForAdapter(it)
         }
     }
 
-    private fun inflateLoginStub() {
-        val loginPicture = binding.stubLoginPic.inflate()
-
-        loginPicture.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSteamAuthFragment())
+    private fun submitListForAdapter(list: List<GameEntity>) {
+        val sorted: ArrayList<GameEntity> = arrayListOf()
+        list.forEach { item ->
+            if (!item.is_free_game) {
+                sorted.add(item)
+            }
         }
+        sorted.sortByDescending { item -> item.discount_pct }
+        gameListAdapter.submitList(sorted.toList())
+
+        restoreRecyclerState()
     }
 
-    private fun inflateStub() {
-        viewModel.userId.value?.let {
-            inflateWishListStub()
-        } ?: inflateLoginStub()
+    private fun showStub(stub: ViewStub) {
+        when (stub) {
+            binding.stubLoginPic -> stub.showSelf {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSteamAuthFragment())
+            }
+            else -> stub.showSelf {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToWishListFragment())
+            }
+        }
     }
 }

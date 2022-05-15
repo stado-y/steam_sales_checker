@@ -3,6 +3,8 @@ package com.example.saleschecker.data.network.steamspy
 import com.example.saleschecker.data.local.games.GameEntity
 import com.google.gson.annotations.SerializedName
 
+const val CURRENCY = "USD"
+
 data class SteamSpyResponceGame(
     @SerializedName("appid")
     val id: Int,
@@ -34,7 +36,7 @@ data class SteamSpyResponceGame(
             price = price.toFloat() / 100, // in USD TODO convert to local currency
             discount_pct = discount.toInt(),
             is_free_game = price.toInt() == 0,
-            currency = "USD",
+            currency = CURRENCY,
         )
     }
 

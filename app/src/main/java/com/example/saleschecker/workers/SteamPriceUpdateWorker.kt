@@ -7,6 +7,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.saleschecker.data.local.EntityConverters
 import com.example.saleschecker.data.local.games.GamesDao
+import com.example.saleschecker.data.local.steam.SteamPriceUpdateEntity
 import com.example.saleschecker.data.local.steam.SteamWishListDao
 import com.example.saleschecker.data.local.steamspy.SteamSpyTopListDao
 import com.example.saleschecker.data.local.user.UserDao
@@ -15,13 +16,16 @@ import com.example.saleschecker.data.network.steam.SteamResponsePriceUpdate
 import com.example.saleschecker.mutual.Constants
 import com.example.saleschecker.utils.ResourceProvider
 import com.example.saleschecker.utils.toCsv
+
 import dagger.assisted.Assisted
+
 import dagger.assisted.AssistedInject
+import java.lang.Exception
+import java.lang.IllegalArgumentException
 
 const val TAG = "price_update_worker"
 
 const val UPDATE_PRICE_WORK_TAG = "SteamPriceUpdateWorker"
-
 @HiltWorker
 class SteamPriceUpdateWorker @AssistedInject constructor(
     @Assisted context: Context, @Assisted params: WorkerParameters,
@@ -31,32 +35,59 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
     private val steamWishListDao: SteamWishListDao,
     private val resourceProvider: ResourceProvider,
     private val steamSpyTopListDao: SteamSpyTopListDao,
-
-    ) : CoroutineWorker(context, params) {
-
+) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
         return try {
             val countryCode = userDao.getCountryCode() ?: resourceProvider.getLocale().country
-            savePrices(getUpdatedPrices(getGamesList(countryCode), countryCode))
+
+            val listOfGameIds = getGamesList(countryCode)
+            Log.e(TAG, "doWork: listOfGameIds size : ${ listOfGameIds.size }", )
+
+            val response = convertResponse(getUpdatedPrices(listOfGameIds, countryCode))
+            savePrices(response)
+
+            val newCurrency = resourceProvider.getCurrency(countryCode)
+            manuallyUpdateGames(getListDiff(listOfGameIds, response), newCurrency)
+
             Result.success()
         } catch (error: Exception) {
             Log.e(TAG, "doWork: ", error)
             Result.failure()
         }
+    }
 
+    private suspend fun manuallyUpdateGames(listDiff: List<Int>, newCurrency: String) {
+        if (listDiff.isNotEmpty()) {
+            val notUpdatedGames = gamesDao.getListOfGamesByListOfIds(listDiff)
 
+            val manuallyUpdatedGames = notUpdatedGames.map {
+                it.copy(
+                    currency = newCurrency,
+                    price = if (it.is_free_game) 0f else Constants.DEFAULT_PRICE,
+                    discount_pct = 0
+                )
+            }
+            Log.e(TAG, "doWork: manually updated : ${manuallyUpdatedGames}",)
+            gamesDao.saveSteamGames(manuallyUpdatedGames)
+        }
+    }
+
+    private fun getListDiff(
+        listOfGameIds: List<Int>,
+        response: List<SteamPriceUpdateEntity>
+    ): List<Int> {
+        val responseIds = response.map {
+            it.id
+        }
+        return listOfGameIds - responseIds
     }
 
     private suspend fun getGamesList(countryCode: String): List<Int> {
         val workType = inputData.getString(Constants.TYPE_OF_UPDATE)
         return when (workType) {
             Constants.UPDATE_WISHLIST -> steamWishListDao.getSteamWishListGameIds()
-            Constants.UPDATE_CURRENCY -> gamesDao.getListOfGameIdsToUpdateCurrency(
-                resourceProvider.getCurrency(
-                    countryCode
-                )
-            )
+            Constants.UPDATE_CURRENCY -> gamesDao.getListOfGameIdsToUpdateCurrency(resourceProvider.getCurrency(countryCode))
             Constants.UPDATE_STEAMSPY_PRICES -> steamSpyTopListDao.getTopList()
             else -> throw (IllegalArgumentException("$TAG : getGamesList : invalid update type : $workType"))
         }
@@ -69,15 +100,19 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
         return steamApiClient.getAppDetailsBulk(
             gameIds.toCsv(),
             countryCode,
-        )
+        ).filter {
+            it.value.success && it.value.data.isNotEmpty()
+        }
     }
 
-    private suspend fun savePrices(response: Map<String, SteamResponsePriceUpdate>) {
-        gamesDao.updatePrices(
-            EntityConverters.convertSteamResponsePriceUpdateToSteamPriceUpdateEntity(
-                response
-            )
-        )
+    private suspend fun savePrices(list: List<SteamPriceUpdateEntity>) {
+        gamesDao.updatePrices(list)
+    }
+
+    private fun convertResponse(
+        response: Map<String, SteamResponsePriceUpdate>
+    ): List<SteamPriceUpdateEntity> {
+        return EntityConverters.convertSteamResponsePriceUpdateToSteamPriceUpdateEntity(response)
     }
 
 }

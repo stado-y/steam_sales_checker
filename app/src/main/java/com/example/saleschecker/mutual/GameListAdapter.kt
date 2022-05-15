@@ -2,20 +2,20 @@ package com.example.saleschecker.mutual
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.saleschecker.R
 import com.example.saleschecker.data.local.games.GameEntity
-import com.example.saleschecker.databinding.FragmentDetailsBinding
 import com.example.saleschecker.databinding.GameItemBinding
-import com.example.saleschecker.detailsfragment.DetailsFragment
-import com.example.saleschecker.homefragment.HomeFragment
 import com.example.saleschecker.mutual.GlideObject.Companion.loadPicture
+import com.example.saleschecker.utils.ResourceProvider
 import com.example.saleschecker.utils.UrlBuilder
+import javax.inject.Inject
 
-class GameListAdapter : ListAdapter<GameEntity, GameListAdapter.WishListViewHolder>(gameDiffUtil) {
+class GameListAdapter @Inject constructor(
+    private val resourceProvider: ResourceProvider
+): ListAdapter<GameEntity, GameListAdapter.WishListViewHolder>(gameDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
         val view = GameItemBinding.inflate(
@@ -31,27 +31,32 @@ class GameListAdapter : ListAdapter<GameEntity, GameListAdapter.WishListViewHold
         holder.bind(current)
     }
 
+
     inner class WishListViewHolder(
         private val binding: GameItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: GameEntity) {
-
             binding.gamePicture.loadPicture(UrlBuilder.getImageUrl(item.id))
             binding.gameName.text = item.name
-            binding.gamePrice.text =
-                if (item.price != 0f) item.price.toString().plus(" ${item.currency}") else "Free!"
-            binding.root.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_detailsFragment)
+            binding.gamePrice.text = when (item.price) {
+                0f -> resourceProvider.getStringResource(R.string.free_game)
+                Constants.DEFAULT_PRICE -> {
+                    if (item.is_free_game) { resourceProvider.getStringResource(R.string.free_game) }
+                    else { resourceProvider.getStringResource(R.string.price_is_unavailable) }
+                }
+                else -> item.price.toString().plus(" ${ item.currency }")
             }
+
+//            if (item.price != 0f) item.price.toString().plus(" ${ item.currency }") else "Free"
         }
     }
 
 
     companion object {
-        private val gameDiffUtil = object : DiffUtil.ItemCallback<GameEntity>() {
+        private val gameDiffUtil = object: DiffUtil.ItemCallback<GameEntity>() {
             override fun areItemsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
-                return oldItem === newItem
+                return areContentsTheSame(oldItem, newItem)
             }
 
             override fun areContentsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {

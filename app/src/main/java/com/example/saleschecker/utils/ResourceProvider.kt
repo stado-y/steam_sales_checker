@@ -96,4 +96,8 @@ class ResourceProvider @Inject constructor(
         }
         return getDrawable(getDrawableId(flagName))
     }
+
+    fun getStringResource(id: Int): String = app.getString(id)
+
+
 }
