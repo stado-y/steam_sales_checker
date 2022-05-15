@@ -13,7 +13,6 @@ import com.example.saleschecker.mutual.Constants
 import com.example.saleschecker.utils.ResourceProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,21 +29,36 @@ class HomeViewModel @Inject constructor(
     val userId: LiveData<Long?> = userDao.getUserIdLiveData()
 
     init {
-        execute( request = { repository.updateTop100in2Weeks() }, success = ::afterUpdate)
-
-        if (BuildConfig.BUILD_TYPE == Constants.DEBUG_BUILD_TYPE) {
-            runBlocking {
-                userDao.saveUser(
-                    UserEntity(
-                        id = Constants.DEBUG_USER_ID,
-                        countryCode = resourceProvider.getLocale().country
-                    )
-                )
-            }
-        }
+        execute(
+            request = {
+                startupUserIdCheck()
+                repository.updateTop100in2Weeks()
+            },
+            success = ::afterUpdate
+        )
     }
     private fun <T> afterUpdate(result: T?) {
         Log.e("HomeViewModel", "afterUpdate: CALL", )
         workerCreator.createPriceUpdater(Constants.UPDATE_STEAMSPY_PRICES)
+    }
+
+    private suspend fun startupUserIdCheck() {
+        val currentUserId = userDao.selectUserId()
+        if (currentUserId == null) {
+            userDao.saveUser(
+                UserEntity(
+                    id = Constants.DEFAULT_USER_ID,
+                    countryCode = resourceProvider.getLocale().country
+                )
+            )
+        }
+        if (BuildConfig.BUILD_TYPE == Constants.DEBUG_BUILD_TYPE && currentUserId != Constants.DEBUG_USER_ID) {
+            userDao.saveUser(
+                UserEntity(
+                    id = Constants.DEBUG_USER_ID,
+                    countryCode = resourceProvider.getLocale().country
+                )
+            )
+        }
     }
 }
