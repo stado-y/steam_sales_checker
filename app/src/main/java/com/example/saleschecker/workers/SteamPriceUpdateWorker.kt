@@ -16,9 +16,7 @@ import com.example.saleschecker.data.network.steam.SteamResponsePriceUpdate
 import com.example.saleschecker.mutual.Constants
 import com.example.saleschecker.utils.ResourceProvider
 import com.example.saleschecker.utils.toCsv
-
 import dagger.assisted.Assisted
-
 import dagger.assisted.AssistedInject
 import java.lang.Exception
 import java.lang.IllegalArgumentException
@@ -44,11 +42,10 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
             val listOfGameIds = getGamesList(countryCode)
             Log.e(TAG, "doWork: listOfGameIds size : ${ listOfGameIds.size }", )
 
-            val response = convertResponse(getUpdatedPrices(listOfGameIds, countryCode))
-            savePrices(response)
-
+            val response = convertResponse(getUpdatedPrices(listOfGameIds, countryCode)).toMutableList()
             val newCurrency = resourceProvider.getCurrency(countryCode)
-            manuallyUpdateGames(getListDiff(listOfGameIds, response), newCurrency)
+            response += manuallyUpdateGames(getListDiff(listOfGameIds, response), newCurrency)
+            savePrices(response)
 
             Result.success()
         } catch (error: Exception) {
@@ -57,20 +54,19 @@ class SteamPriceUpdateWorker @AssistedInject constructor(
         }
     }
 
-    private suspend fun manuallyUpdateGames(listDiff: List<Int>, newCurrency: String) {
-        if (listDiff.isNotEmpty()) {
-            val notUpdatedGames = gamesDao.getListOfGamesByListOfIds(listDiff)
+    private fun manuallyUpdateGames(listDiff: List<Int>, newCurrency: String): List<SteamPriceUpdateEntity> {
+        val notUpdatedGames = gamesDao.getListOfGamesByListOfIds(listDiff)
 
-            val manuallyUpdatedGames = notUpdatedGames.map {
-                it.copy(
-                    currency = newCurrency,
-                    price = if (it.is_free_game) 0f else Constants.DEFAULT_PRICE,
-                    discount_pct = 0
-                )
-            }
-            Log.e(TAG, "doWork: manually updated : ${manuallyUpdatedGames}",)
-            gamesDao.saveSteamGames(manuallyUpdatedGames)
+        val manuallyUpdatedGames: List<SteamPriceUpdateEntity> = notUpdatedGames.mapNotNull {
+            SteamPriceUpdateEntity(
+                id = it.id,
+                currency = newCurrency,
+                price = if (it.is_free_game) 0f else Constants.DEFAULT_PRICE,
+                discount_percent = 0,
+            )
         }
+        Log.e(TAG, "doWork: manually updated : ${manuallyUpdatedGames}",)
+        return manuallyUpdatedGames
     }
 
     private fun getListDiff(
