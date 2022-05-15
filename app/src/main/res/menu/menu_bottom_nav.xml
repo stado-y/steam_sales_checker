@@ -6,4 +6,5 @@
     <item
         android:id="@+id/wishListFragment"
         android:title="Wish List"/>
+
 </menu>

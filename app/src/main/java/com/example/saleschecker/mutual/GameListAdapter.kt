@@ -2,11 +2,16 @@ package com.example.saleschecker.mutual
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.saleschecker.R
 import com.example.saleschecker.data.local.games.GameEntity
+import com.example.saleschecker.databinding.FragmentDetailsBinding
 import com.example.saleschecker.databinding.GameItemBinding
+import com.example.saleschecker.detailsfragment.DetailsFragment
+import com.example.saleschecker.homefragment.HomeFragment
 import com.example.saleschecker.mutual.GlideObject.Companion.loadPicture
 import com.example.saleschecker.utils.UrlBuilder
 
@@ -26,7 +31,6 @@ class GameListAdapter : ListAdapter<GameEntity, GameListAdapter.WishListViewHold
         holder.bind(current)
     }
 
-
     inner class WishListViewHolder(
         private val binding: GameItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -38,7 +42,7 @@ class GameListAdapter : ListAdapter<GameEntity, GameListAdapter.WishListViewHold
             binding.gamePrice.text =
                 if (item.price != 0f) item.price.toString().plus(" ${item.currency}") else "Free!"
             binding.root.setOnClickListener {
-
+            Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_detailsFragment)
             }
         }
     }

@@ -17,6 +17,9 @@
             android:id="@+id/action_homeFragment_to_wishListFragment"
             app:destination="@id/wishListFragment"
             app:popUpTo="@id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/steamAuthFragment"
@@ -33,4 +36,8 @@
         android:name="com.example.saleschecker.wishlistfragment.WishListFragment"
         android:label="fragment_wish_list"
         tools:layout="@layout/fragment_wish_list" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.saleschecker.detailsfragment.DetailsFragment"
+        android:label="DetailsFragment" />
 </navigation>
