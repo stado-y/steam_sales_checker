@@ -3,6 +3,7 @@ package com.example.saleschecker.utils
 import android.app.Application
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.ConfigurationCompat
 import com.example.saleschecker.R
@@ -100,5 +101,7 @@ class ResourceProvider @Inject constructor(
 
     fun getStringResource(id: Int): String = app.getString(id)
 
-
+    fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(app.applicationContext, text, length).show()
+    }
 }
