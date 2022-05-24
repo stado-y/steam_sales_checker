@@ -8,10 +8,12 @@ import com.example.saleschecker.data.local.steam.SteamWishListEntity
 import com.example.saleschecker.data.local.user.UserDao
 import com.example.saleschecker.data.local.user.UserEntity
 import com.example.saleschecker.utils.ResourceProvider
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 const val TAG = "SteamRepository"
+const val UPDATE_QUERY_DELAY = 100L
 
 class SteamRepository @Inject constructor (
     private val steamApi: SteamApiClient,
@@ -20,15 +22,46 @@ class SteamRepository @Inject constructor (
     private val steamWishListDao: SteamWishListDao,
     private val resourceProvider: ResourceProvider,
 ) {
-    suspend fun updateWishList() {
-        val response = userDao.getUserId()?.let { id ->
+    suspend fun updateWishList(): Boolean {
+        var page = 0
+        val userId = userDao.getUserId()
+        val countryCode = getCountryCode()
+
+        var response: Map<String, SteamResponseGame>? = userId?.let { id ->
             steamApi.getWishlist(
                 profileId = id,
-                countryCode = getCountryCode(),
+                countryCode = countryCode,
+                page = page,
             )
-        }
-        Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}", )
+        } ?: return false
 
+        Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}", )
+        Log.e(TAG, "updateWishList: wishlist response size : ${response?.size}", )
+
+        if (response.isNullOrEmpty()) { return false }
+
+        steamWishListDao.deleteWishList()
+
+        do {
+            convertAndSaveWishlistGames(response)
+            delay(UPDATE_QUERY_DELAY)
+            response = steamApi.getWishlist(
+                profileId = userId,
+                countryCode = countryCode,
+                page = ++page,
+            )
+            Log.e(TAG, "updateWishList: wishlist response : ${response.toString()}", )
+            Log.e(TAG, "updateWishList: wishlist response size : ${response?.size}", )
+            Log.e(TAG, "updateWishList: wishlist page : ${ page }", )
+
+        } while (!response.isNullOrEmpty())
+
+        Log.e(TAG, "updateWishList: returned true", )
+
+        return true
+    }
+
+    private suspend fun convertAndSaveWishlistGames(response: Map<String, SteamResponseGame>?) {
         response?.let {
             val convertedGames: ArrayList<GameEntity> = arrayListOf()
             val wishList: ArrayList<SteamWishListEntity> = arrayListOf()
@@ -65,7 +98,7 @@ class SteamRepository @Inject constructor (
     }
 
     private suspend fun saveWishList(list: List<SteamWishListEntity>) {
-        steamWishListDao.deleteWishList()
+        //steamWishListDao.deleteWishList()
         steamWishListDao.saveWishList(list)
     }
 

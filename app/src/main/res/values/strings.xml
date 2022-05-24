@@ -12,4 +12,7 @@
 
     <string name="free_game">Free</string>
     <string name="price_is_unavailable">Unavailable</string>
+
+    <string name="update_fail">Update failed. Check internet connection or privacy settings in your steam profile</string>
+    <string name="update_success">Data successfully updated</string>
 </resources>
