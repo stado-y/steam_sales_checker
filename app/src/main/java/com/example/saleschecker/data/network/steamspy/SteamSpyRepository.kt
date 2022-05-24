@@ -41,7 +41,6 @@ class SteamSpyRepository @Inject constructor(
                 "updateTop100in2Weeks: $response",
             )
         }
-
     }
 
     private suspend fun saveTopList(list: List<SteamSpyTopListEntity>) {

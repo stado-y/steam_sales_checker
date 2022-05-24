@@ -16,7 +16,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/backdrop_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src= "@drawable/ic_image_placeholder"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/details_poster_card"
@@ -33,7 +34,8 @@
                 android:id="@+id/details_poster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/roundstyle" />
+                android:background="@drawable/roundstyle"
+                tools:src= "@drawable/ic_image_placeholder" />
 
         </androidx.cardview.widget.CardView>
 
@@ -95,7 +97,8 @@
             app:layout_constraintEnd_toEndOf="@+id/details_poster_card"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/details_poster_card"
-            app:layout_constraintTop_toBottomOf="@+id/details_poster_card" />
+            app:layout_constraintTop_toBottomOf="@+id/details_poster_card"
+            android:foregroundGravity="center"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

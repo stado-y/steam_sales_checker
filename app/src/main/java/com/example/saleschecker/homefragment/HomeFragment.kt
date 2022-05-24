@@ -32,13 +32,15 @@ class HomeFragment : FragmentWithRecycler() {
     @Inject
     lateinit var gameListAdapter: GameListAdapter
 
+    @Inject
+    lateinit var itemListener: GameListAdapter.OnItemClickListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        Log.e(TAG, "onCreateView: ", )
+        Log.e(TAG, "onCreateView: ")
         return binding.root
 
     }
@@ -73,9 +75,11 @@ class HomeFragment : FragmentWithRecycler() {
     private fun initRecycler() {
         recycler?.apply {
             layoutManager = LinearLayoutManager(this.context)
+
             if (adapter != gameListAdapter) {
                 adapter = gameListAdapter
             }
+
         }
     }
 

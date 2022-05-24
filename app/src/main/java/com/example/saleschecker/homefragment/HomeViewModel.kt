@@ -25,11 +25,11 @@ class HomeViewModel @Inject constructor(
     val userId: LiveData<Long?> = userDao.getUserIdLiveData()
 
     init {
-        execute( request = { repository.updateTop100in2Weeks() }, success = ::afterUpdate)
+        execute(request = { repository.updateTop100in2Weeks() }, success = ::afterUpdate)
     }
 
     private fun <T> afterUpdate(result: T?) {
-        Log.e("HomeViewModel", "afterUpdate: CALL", )
+        Log.e("HomeViewModel", "afterUpdate: CALL")
         workerCreator.createPriceUpdater(Constants.UPDATE_STEAMSPY_PRICES)
     }
 }

@@ -77,6 +77,7 @@ class GlideObject : AppGlideModule() {
                 .placeholder(R.drawable.ic_image_placeholder)
                 .dontAnimate()
                 .dontTransform()
+                .error(com.google.android.material.R.drawable.mtrl_ic_error)
                 .into(this)
         }
     }
