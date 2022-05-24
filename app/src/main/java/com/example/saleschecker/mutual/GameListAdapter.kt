@@ -47,6 +47,10 @@ class GameListAdapter @Inject constructor(
                 }
                 else -> item.price.toString().plus(" ${ item.currency }")
             }
+            binding.gameDiscount.text = when (item.discount_pct) {
+                0 -> null
+                else -> "Discount ${ item.discount_pct } %"
+            }
 
 //            if (item.price != 0f) item.price.toString().plus(" ${ item.currency }") else "Free"
         }
