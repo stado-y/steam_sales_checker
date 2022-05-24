@@ -65,7 +65,7 @@ class WishListFragment : FragmentWithRecycler(), BackButtonCallbackReceiver {
     }
     private fun observe() {
         viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
-            gameListAdapter.submitList(it)
+            gameListAdapter.submitList(it.sortedByDescending { game -> game.discount_pct })
             restoreRecyclerState()
         }
     }

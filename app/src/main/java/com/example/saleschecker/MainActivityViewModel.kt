@@ -27,12 +27,14 @@ class MainActivityViewModel @Inject constructor(
         Log.e(TAG, "BuildConfig.BUILD_TYPE : ${ BuildConfig.BUILD_TYPE } ", )
         if (BuildConfig.BUILD_TYPE == Constants.DEBUG_BUILD_TYPE) {
             execute(request = {
-                userDao.saveUser(
-                    UserEntity(
-                        id = Constants.DEBUG_USER_ID,
-                        countryCode = resourceProvider.getLocale().country
+                if (userDao.getUserId() != Constants.DEBUG_USER_ID) {
+                    userDao.saveUser(
+                        UserEntity(
+                            id = Constants.DEBUG_USER_ID,
+                            countryCode = resourceProvider.getLocale().country
+                        )
                     )
-                )
+                }
             })
         } else {
             execute( request = ::saveDefaultUser )
