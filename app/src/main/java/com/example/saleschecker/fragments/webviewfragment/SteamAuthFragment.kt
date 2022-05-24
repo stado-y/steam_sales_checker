@@ -1,4 +1,4 @@
-package com.example.saleschecker.webviewfragment
+package com.example.saleschecker.fragments.webviewfragment
 
 import android.os.Bundle
 import android.util.Log

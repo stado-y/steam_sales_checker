@@ -1,4 +1,4 @@
-package com.example.saleschecker.wishlistfragment
+package com.example.saleschecker.mutual
 
 import android.util.Log
 import androidx.activity.OnBackPressedCallback

@@ -1,4 +1,4 @@
-package com.example.saleschecker.webviewfragment
+package com.example.saleschecker.fragments.webviewfragment
 
 import android.content.ContentValues.TAG
 import android.graphics.Bitmap

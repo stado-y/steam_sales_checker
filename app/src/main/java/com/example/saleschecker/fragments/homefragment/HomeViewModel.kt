@@ -1,4 +1,4 @@
-package com.example.saleschecker.homefragment
+package com.example.saleschecker.fragments.homefragment
 
 import android.util.Log
 import androidx.lifecycle.LiveData

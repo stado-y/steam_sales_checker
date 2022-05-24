@@ -6,7 +6,7 @@
     android:contentDescription="@string/app_name"
     android:orientation="vertical"
 
-    tools:context=".homefragment.HomeFragment" >
+    tools:context=".fragments.homefragment.HomeFragment" >
 
     <ViewStub
         android:id="@+id/stub_login_pic"
@@ -24,6 +24,8 @@
         android:id="@+id/homeScreenRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <include layout="@layout/progress_bar_merge" />
 
 
 </LinearLayout>
