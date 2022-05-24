@@ -1,4 +1,4 @@
-package com.example.saleschecker.wishlistfragment
+package com.example.saleschecker.fragments.wishlistfragment
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.saleschecker.databinding.FragmentWishListBinding
+import com.example.saleschecker.mutual.BackButtonCallback
+import com.example.saleschecker.mutual.BackButtonCallbackReceiver
 import com.example.saleschecker.mutual.FragmentWithRecycler
 import com.example.saleschecker.mutual.GameListAdapter
 import com.example.saleschecker.utils.observeWithLifecycle

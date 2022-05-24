@@ -1,4 +1,4 @@
-package com.example.saleschecker.homefragment
+package com.example.saleschecker.fragments.homefragment
 
 import android.os.Bundle
 import android.util.Log
