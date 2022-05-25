@@ -6,14 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.saleschecker.databinding.FragmentWishListBinding
-import com.example.saleschecker.mutual.BackButtonCallback
-import com.example.saleschecker.mutual.BackButtonCallbackReceiver
-import com.example.saleschecker.mutual.FragmentWithRecycler
-import com.example.saleschecker.mutual.GameListAdapter
+import com.example.saleschecker.mutual.*
 import com.example.saleschecker.utils.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,6 +39,7 @@ class WishListFragment : FragmentWithRecycler(), BackButtonCallbackReceiver {
         super.onViewCreated(view, savedInstanceState)
 
         recycler = binding.wishListRecycler
+        gameListAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
         initRecycler()
         observe()
@@ -65,7 +65,7 @@ class WishListFragment : FragmentWithRecycler(), BackButtonCallbackReceiver {
     }
     private fun observe() {
         viewModel.games.observeWithLifecycle(viewLifecycleOwner) {
-            gameListAdapter.submitList(it.sortedByDescending { game -> game.discount_pct })
+            gameListAdapter.submitList(it/*.sortedByDescending { game -> game.discount_pct }*/)
             restoreRecyclerState()
         }
     }
@@ -80,6 +80,18 @@ class WishListFragment : FragmentWithRecycler(), BackButtonCallbackReceiver {
         savedRecyclerState = backButtonRecyclerSavedState
         backButtonRecyclerSavedState = null
     }
+
+//    private fun addSortingBtnClickListener() {
+//        binding.sortingText.setOnClickListener {
+//            viewModel.sorting.value = when (viewModel.sorting.value) {
+//                Sorting.NAME -> Sorting.DISCOUNT
+//                Sorting.DISCOUNT -> Sorting.PRICE
+//                else -> Sorting.NAME
+//            }
+//            (it as TextView).text = "Sorting : ${ viewModel.sorting.value }"
+//        }
+//
+//    }
 
     companion object {
         internal var backButtonRecyclerSavedState: Parcelable? = null

@@ -4,7 +4,9 @@ import androidx.room.*
 import com.example.saleschecker.data.local.steam.SteamPriceUpdateEntity
 import com.example.saleschecker.data.local.steam.SteamWishListEntity
 import com.example.saleschecker.data.local.steamspy.SteamSpyTopListEntity
+import com.example.saleschecker.mutual.Sorting
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 @Dao
 interface GamesDao {
@@ -14,8 +16,11 @@ interface GamesDao {
         suspend fun saveSteamGames(games: List<GameEntity>)
 
         @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } " +
-                "WHERE `id` IN ${ SteamWishListEntity.STEAM_WISHLIST_TABLE }")
-        fun getSteamWishListFlow(): Flow<List<GameEntity>>
+                "WHERE `id` IN ${ SteamWishListEntity.STEAM_WISHLIST_TABLE } ORDER BY " +
+                "CASE WHEN :order = ${ Sorting.NAME } THEN name END ASC, " +
+                "CASE WHEN :order = ${ Sorting.DISCOUNT } THEN discount_pct END DESC, " +
+                "CASE WHEN :order = ${ Sorting.PRICE } THEN price END ASC")
+        fun getSteamWishListFlow(order: Int = Sorting.DISCOUNT): Flow<List<GameEntity>>
 
         @Query("SELECT * FROM ${ GameEntity.TABLE_NAME } " +
                 "WHERE `id` IN ${ SteamWishListEntity.STEAM_WISHLIST_TABLE }")

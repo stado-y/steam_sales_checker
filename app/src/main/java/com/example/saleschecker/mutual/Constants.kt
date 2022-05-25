@@ -17,4 +17,5 @@ object Constants {
     const val UPDATE_STEAMSPY_PRICES = "update_steamspy_prices"
     const val UPDATE_CURRENCY = "update_currency"
     const val GAMES_FOR_UPDATE = "games_for_update"
+
 }

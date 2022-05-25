@@ -6,9 +6,10 @@ import com.example.saleschecker.R
 import com.example.saleschecker.data.local.games.GameEntity
 import com.example.saleschecker.data.network.steam.SteamRepository
 import com.example.saleschecker.mutual.BaseViewModel
+import com.example.saleschecker.mutual.Sorting
 import com.example.saleschecker.utils.ResourceProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 const val TAG = "WishListViewModel"
@@ -19,7 +20,11 @@ class WishListViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
 ): BaseViewModel() {
 
-    val games: Flow<List<GameEntity>> = repository.getWishList()
+    val sorting = MutableStateFlow(savedSorting)
+
+    val games: Flow<List<GameEntity>> = sorting.flatMapLatest {
+        loadOrderedWishList(it)
+    }
 
     init {
         if (!updated) {
@@ -45,7 +50,12 @@ class WishListViewModel @Inject constructor(
 //        }
     }
 
+    private fun loadOrderedWishList(order: Int = savedSorting): Flow<List<GameEntity>> {
+        return repository.getWishList(order)
+    }
+
     companion object {
-        private var updated = false;
+        private var updated = false
+        var savedSorting = Sorting.DISCOUNT
     }
 }

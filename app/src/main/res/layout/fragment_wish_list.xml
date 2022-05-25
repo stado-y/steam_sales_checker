@@ -5,8 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".fragments.wishlistfragment.WishListFragment">
 
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wishListRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+        />
+
+    <!--<TextView
+        android:id="@+id/sortingText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:text="SORT"
+
+        />-->
 </FrameLayout>

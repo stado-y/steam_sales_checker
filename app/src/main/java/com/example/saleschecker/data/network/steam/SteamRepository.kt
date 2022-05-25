@@ -7,9 +7,11 @@ import com.example.saleschecker.data.local.steam.SteamWishListDao
 import com.example.saleschecker.data.local.steam.SteamWishListEntity
 import com.example.saleschecker.data.local.user.UserDao
 import com.example.saleschecker.data.local.user.UserEntity
+import com.example.saleschecker.mutual.Sorting
 import com.example.saleschecker.utils.ResourceProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 const val TAG = "SteamRepository"
@@ -106,8 +108,8 @@ class SteamRepository @Inject constructor (
         return gamesDao.getFlowOfAllGames()
     }
 
-    fun getWishList(): Flow<List<GameEntity>> {
-        return gamesDao.getSteamWishListFlow()
+    fun getWishList(sortingType: Int = Sorting.DISCOUNT): Flow<List<GameEntity>> {
+        return gamesDao.getSteamWishListFlow(sortingType)
     }
 
 
